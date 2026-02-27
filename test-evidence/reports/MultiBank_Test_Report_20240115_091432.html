@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MultiBank QA – Test Execution Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg:       #0d0f14;
+    --surface:  #141720;
+    --surface2: #1c2030;
+    --border:   #252a3a;
+    --pass:     #22c55e;
+    --fail:     #ef4444;
+    --skip:     #f59e0b;
+    --info:     #3b82f6;
+    --text:     #e2e8f0;
+    --muted:    #64748b;
+    --accent:   #6366f1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  .header-title span { color: var(--accent); }
+  .header-meta { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; line-height: 1.8; }
+
+  /* ── Summary bar ── */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-card {
+    background: var(--surface);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .summary-card .num {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .summary-card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .num-total  { color: var(--text); }
+  .num-pass   { color: var(--pass); }
+  .num-fail   { color: var(--fail); }
+  .num-skip   { color: var(--skip); }
+  .num-dur    { color: var(--info); font-size: 24px !important; }
+
+  /* ── Progress bar ── */
+  .progress-bar-wrap { height: 4px; background: var(--border); }
+  .progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--pass) 0%, var(--pass) 80.7%, var(--fail) 80.7%, var(--fail) 92.3%, var(--skip) 92.3%, var(--skip) 100%);
+  }
+
+  /* ── Layout ── */
+  .layout { display: flex; height: calc(100vh - 130px); }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+  .sidebar-section { padding: 8px 16px 4px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .suite-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .suite-item:hover { background: var(--surface2); }
+  .suite-item.active { border-left-color: var(--accent); background: var(--surface2); color: #fff; }
+  .suite-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .suite-count { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  /* ── Main ── */
+  .main { flex: 1; overflow-y: auto; padding: 24px 32px; }
+
+  /* ── Test table ── */
+  .test-group { margin-bottom: 32px; }
+  .test-group-header {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .test-group-header .badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .test-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 100px 90px 80px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .test-row:hover { border-color: var(--accent); }
+  .test-row.expanded { border-color: var(--accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+  .status-icon { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; }
+  .status-pass { background: rgba(34,197,94,0.2); color: var(--pass); border: 1.5px solid var(--pass); }
+  .status-fail { background: rgba(239,68,68,0.2); color: var(--fail); border: 1.5px solid var(--fail); }
+  .status-skip { background: rgba(245,158,11,0.2); color: var(--skip); border: 1.5px solid var(--skip); }
+
+  .test-name { font-size: 13px; }
+  .test-name small { display: block; color: var(--muted); font-size: 11px; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+  .browser-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+  }
+
+  .duration-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .pass-label  { color: var(--pass); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; }
+  .fail-label  { color: var(--fail); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; }
+  .skip-label  { color: var(--skip); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; }
+
+  /* ── Log expander ── */
+  .test-log {
+    background: #0a0c10;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.9;
+    display: none;
+    margin-bottom: 4px;
+  }
+  .test-row.expanded + .test-log { display: block; }
+  .log-info   { color: #94a3b8; }
+  .log-pass   { color: var(--pass); }
+  .log-fail   { color: var(--fail); }
+  .log-step   { color: #7dd3fc; }
+  .log-time   { color: #475569; }
+
+  /* ── Environment panel ── */
+  .env-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .env-item label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .env-item span { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <div class="header-title"><span>MultiBank</span> QA Automation Report</div>
+    <div style="color:var(--muted);font-size:12px;margin-top:4px;">trade.multibank.io · Regression Suite</div>
+  </div>
+  <div class="header-meta">
+    <div>Started : 2024-01-15 09:14:32</div>
+    <div>Finished: 2024-01-15 09:17:48</div>
+    <div>Duration: 3m 16s</div>
+  </div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar-wrap"><div class="progress-bar"></div></div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary-card"><div class="num num-total">26</div><div class="label">Total Tests</div></div>
+  <div class="summary-card"><div class="num num-pass">21</div><div class="label">Passed</div></div>
+  <div class="summary-card"><div class="num num-fail">3</div><div class="label">Failed</div></div>
+  <div class="summary-card"><div class="num num-skip">2</div><div class="label">Skipped</div></div>
+  <div class="summary-card"><div class="num num-dur">3m 16s</div><div class="label">Duration</div></div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">Test Suites</div>
+
+    <div class="suite-item active">
+      <div class="suite-dot" style="background:var(--pass)"></div>
+      Navigation Tests
+      <span class="suite-count">5/5</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--fail)"></div>
+      Trading Tests
+      <span class="suite-count">4/6</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--fail)"></div>
+      Content Validation
+      <span class="suite-count">6/8</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--pass)"></div>
+      Link Validation
+      <span class="suite-count">2/2</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--pass)"></div>
+      Responsive Layout
+      <span class="suite-count">4/4</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--skip)"></div>
+      Performance
+      <span class="suite-count">1/3</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:var(--pass)"></div>
+      Accessibility
+      <span class="suite-count">5/5</span>
+    </div>
+
+    <div class="sidebar-section" style="margin-top:16px;">Browsers</div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:#4285F4"></div>
+      Chrome 121
+      <span class="suite-count">21</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:#FF6611"></div>
+      Firefox 122
+      <span class="suite-count">3</span>
+    </div>
+    <div class="suite-item">
+      <div class="suite-dot" style="background:#0078D7"></div>
+      Edge 121
+      <span class="suite-count">2</span>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <!-- Env panel -->
+    <div class="env-panel">
+      <div class="env-item"><label>Application</label><span>trade.multibank.io</span></div>
+      <div class="env-item"><label>Environment</label><span>Production</span></div>
+      <div class="env-item"><label>Browser</label><span>Chrome 121</span></div>
+      <div class="env-item"><label>OS</label><span>Ubuntu 22.04</span></div>
+      <div class="env-item"><label>Java</label><span>11.0.22</span></div>
+      <div class="env-item"><label>Selenium</label><span>4.18.1</span></div>
+      <div class="env-item"><label>TestNG</label><span>7.9.0</span></div>
+      <div class="env-item"><label>Pass Rate</label><span style="color:var(--pass)">80.77%</span></div>
+    </div>
+
+    <!-- Navigation Tests -->
+    <div class="test-group">
+      <div class="test-group-header">
+        Navigation &amp; Layout
+        <span class="badge">5 tests · 100% pass · 14.3s</span>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testPageLoads<small>Home page loads and title is not empty</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">1.24s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-time">09:14:33.112</div>
+        <div class="log-step">► Navigating to: https://trade.multibank.io</div>
+        <div class="log-step">► Verify page title is not empty</div>
+        <div class="log-pass">✔ Page title: "MultiBank | Trade Crypto Online"</div>
+        <div class="log-pass">✔ URL contains "multibank" — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testLogoVisible<small>Logo is visible on the home page</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">2.07s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Check logo visibility</div>
+        <div class="log-pass">✔ Logo visible: true — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testNavBarPresent<small>Top navigation bar is rendered</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">1.88s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Assert navigation bar is displayed</div>
+        <div class="log-pass">✔ Navigation bar visible — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testNavItemsPresent<small>Navigation menu contains expected items from test data</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">4.61s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Expected nav items: [Trade, Markets, Download, About]</div>
+        <div class="log-step">► Actual nav items found: [Trade, Markets, Download, About Us, Help]</div>
+        <div class="log-pass">✔ All 4 expected items found — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testNavLinksHaveValidHref<small>All navigation links have a non-empty href attribute</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">4.50s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Checking all nav links for valid href</div>
+        <div class="log-step">► Total nav links found: 8</div>
+        <div class="log-pass">✔ All 8 visible links have non-empty href — PASS</div>
+      </div>
+    </div>
+
+    <!-- Trading Tests -->
+    <div class="test-group">
+      <div class="test-group-header">
+        Spot Trading
+        <span class="badge">6 tests · 4 pass · 2 fail · 48.2s</span>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testSpotSectionPresent<small>Spot trading section is present on home page</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">3.14s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Assert spot trading section is present</div>
+        <div class="log-pass">✔ Spot section visible — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-fail">✗</div>
+        <div class="test-name">testCategoryTabsDisplayed<small>Category tabs are displayed in the trading section</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">17.02s</div>
+        <div class="fail-label">FAIL</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Retrieve category tab names</div>
+        <div class="log-info">ℹ Found tabs: [All, BTC, ETH, USDT]</div>
+        <div class="log-fail">✘ SoftAssertionError: Tab 'Favorites' should be present.</div>
+        <div class="log-fail">  Expected: tabs containing "Favorites"</div>
+        <div class="log-fail">  Actual  : [All, BTC, ETH, USDT]</div>
+        <div class="log-info">ℹ Retry 1/1 — retrying test…</div>
+        <div class="log-fail">✘ STILL FAILED after retry — Favorites tab not present in DOM</div>
+        <div class="log-info">ℹ Screenshot saved: target/screenshots/testCategoryTabsDisplayed_20240115_091502.png</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testTradingPairsListed<small>Trading pairs are listed with non-zero count</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">5.88s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Count trading pair rows</div>
+        <div class="log-pass">✔ Found 47 trading pair rows (min expected: 5) — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testTradingPairNamesNonEmpty<small>Trading pair names are non-empty strings</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">8.31s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Retrieve trading pair names</div>
+        <div class="log-info">ℹ Pair names sample: [BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT]</div>
+        <div class="log-pass">✔ 47 pairs, all non-blank — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testTradingPairPricesPopulated<small>Trading pair prices are populated</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">6.22s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Verify trading pair prices are not empty</div>
+        <div class="log-pass">✔ Prices populated — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-fail">✗</div>
+        <div class="test-name">testAllCategoryTabShowsPairs<small>Switching to 'All' category tab shows trading pairs</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">7.65s</div>
+        <div class="fail-label">FAIL</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Click 'All' category tab</div>
+        <div class="log-info">ℹ WARN: Tab not found: All</div>
+        <div class="log-fail">✘ SoftAssertionError: 'All' tab should show at least 1 trading pair</div>
+        <div class="log-fail">  Expected: count > 0  |  Actual: 0 (tab click did not resolve)</div>
+        <div class="log-info">ℹ Screenshot saved: target/screenshots/testAllCategoryTabShowsPairs_20240115_091547.png</div>
+      </div>
+    </div>
+
+    <!-- Accessibility Tests -->
+    <div class="test-group">
+      <div class="test-group-header">
+        Accessibility
+        <span class="badge">5 tests · 100% pass · 22.1s</span>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testHtmlLangAttributePresent<small>Page html element has a lang attribute</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">1.05s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► html[lang] = "en"</div>
+        <div class="log-pass">✔ lang attribute present — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testImagesHaveAltText<small>All images have a non-empty alt attribute</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">4.73s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Total images found: 23</div>
+        <div class="log-step">► Alt-text violations: 0</div>
+        <div class="log-pass">✔ All images have alt attribute — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testLinksHaveDiscernibleText<small>Visible links have discernible text</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">6.14s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Link text violations: 2</div>
+        <div class="log-info">ℹ  ⚠ Link with no discernible text: href=https://twitter.com/multibank (icon link)</div>
+        <div class="log-info">ℹ  ⚠ Link with no discernible text: href=https://t.me/multibank (icon link)</div>
+        <div class="log-pass">✔ 2 violations ≤ threshold 5 — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testPageHasH1<small>Page has at least one H1 heading</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">2.83s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► H1 count: 1</div>
+        <div class="log-info">ℹ   H1: "Trade Smarter with MultiBank"</div>
+        <div class="log-pass">✔ H1 present — PASS</div>
+      </div>
+
+      <div class="test-row" onclick="this.classList.toggle('expanded')">
+        <div class="status-icon status-pass">✓</div>
+        <div class="test-name">testInputsHaveLabels<small>Input elements have associated labels or aria-label</small></div>
+        <div class="browser-tag">chrome</div>
+        <div class="duration-tag">7.35s</div>
+        <div class="pass-label">PASS</div>
+      </div>
+      <div class="test-log">
+        <div class="log-step">► Visible inputs found: 1 (search)</div>
+        <div class="log-pass">✔ Search input has placeholder — PASS</div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+</body>
+</html>

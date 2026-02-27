@@ -1,0 +1,99 @@
+<svg viewBox="0 0 1280 800" xmlns="http://www.w3.org/2000/svg" font-family="monospace">
+  <!-- Browser chrome -->
+  <rect width="1280" height="800" fill="#1a1a2e"/>
+  <!-- Address bar -->
+  <rect x="0" y="0" width="1280" height="36" fill="#0f0f1a"/>
+  <rect x="160" y="6" width="800" height="24" rx="12" fill="#1e1e2e"/>
+  <text x="560" y="23" fill="#6b7280" font-size="12" text-anchor="middle">trade.multibank.io</text>
+  <!-- Back/forward -->
+  <text x="40" y="23" fill="#4b5563" font-size="16">◀</text>
+  <text x="70" y="23" fill="#4b5563" font-size="16">▶</text>
+  <text x="100" y="23" fill="#4b5563" font-size="16">↻</text>
+
+  <!-- Nav bar -->
+  <rect x="0" y="36" width="1280" height="56" fill="#0d1117"/>
+  <rect x="20" y="48" width="120" height="32" rx="4" fill="#161b27"/>
+  <text x="80" y="68" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">MultiBank</text>
+  <text x="250" y="68" fill="#d1d5db" font-size="13">Trade</text>
+  <text x="340" y="68" fill="#d1d5db" font-size="13">Markets</text>
+  <text x="440" y="68" fill="#d1d5db" font-size="13">Download</text>
+  <text x="540" y="68" fill="#d1d5db" font-size="13">About Us</text>
+  <rect x="1160" y="48" width="100" height="32" rx="6" fill="#6366f1"/>
+  <text x="1210" y="68" fill="#fff" font-size="13" text-anchor="middle">Sign Up</text>
+
+  <!-- Page content area -->
+  <rect x="0" y="92" width="1280" height="708" fill="#0f172a"/>
+
+  <!-- Trading section -->
+  <rect x="20" y="110" width="1240" height="580" rx="8" fill="#1e293b"/>
+
+  <!-- Category tabs row -->
+  <rect x="40" y="130" width="1200" height="44" rx="4" fill="#0f172a"/>
+  <!-- Only 4 tabs shown, not 5 — missing Favorites -->
+  <rect x="50" y="135" width="80" height="34" rx="4" fill="#6366f1"/>
+  <text x="90" y="157" fill="#fff" font-size="13" text-anchor="middle">All</text>
+  <rect x="140" y="135" width="80" height="34" rx="4" fill="#1e293b"/>
+  <text x="180" y="157" fill="#94a3b8" font-size="13" text-anchor="middle">BTC</text>
+  <rect x="230" y="135" width="80" height="34" rx="4" fill="#1e293b"/>
+  <text x="270" y="157" fill="#94a3b8" font-size="13" text-anchor="middle">ETH</text>
+  <rect x="320" y="135" width="80" height="34" rx="4" fill="#1e293b"/>
+  <text x="360" y="157" fill="#94a3b8" font-size="13" text-anchor="middle">USDT</text>
+  <!-- NO Favorites tab -->
+
+  <!-- Table headers -->
+  <rect x="40" y="182" width="1200" height="32" fill="#0f172a"/>
+  <text x="60" y="202" fill="#64748b" font-size="12">Pair</text>
+  <text x="400" y="202" fill="#64748b" font-size="12">Last Price</text>
+  <text x="600" y="202" fill="#64748b" font-size="12">24h Change</text>
+  <text x="800" y="202" fill="#64748b" font-size="12">24h Volume</text>
+  <text x="1100" y="202" fill="#64748b" font-size="12">Action</text>
+
+  <!-- Table rows -->
+  <rect x="40" y="214" width="1200" height="40" fill="#1e293b"/>
+  <text x="60" y="239" fill="#f1f5f9" font-size="13" font-weight="bold">BTC/USDT</text>
+  <text x="400" y="239" fill="#f1f5f9" font-size="13">$42,815.30</text>
+  <text x="600" y="239" fill="#22c55e" font-size="13">+2.41%</text>
+  <text x="800" y="239" fill="#94a3b8" font-size="13">$1.24B</text>
+  <rect x="1090" y="222" width="70" height="24" rx="4" fill="#1d4ed8"/>
+  <text x="1125" y="238" fill="#fff" font-size="11" text-anchor="middle">Trade</text>
+
+  <rect x="40" y="255" width="1200" height="40" fill="#172033"/>
+  <text x="60" y="280" fill="#f1f5f9" font-size="13" font-weight="bold">ETH/USDT</text>
+  <text x="400" y="280" fill="#f1f5f9" font-size="13">$2,614.80</text>
+  <text x="600" y="280" fill="#ef4444" font-size="13">-0.87%</text>
+  <text x="800" y="280" fill="#94a3b8" font-size="13">$487.2M</text>
+  <rect x="1090" y="263" width="70" height="24" rx="4" fill="#1d4ed8"/>
+  <text x="1125" y="279" fill="#fff" font-size="11" text-anchor="middle">Trade</text>
+
+  <rect x="40" y="296" width="1200" height="40" fill="#1e293b"/>
+  <text x="60" y="321" fill="#f1f5f9" font-size="13" font-weight="bold">BNB/USDT</text>
+  <text x="400" y="321" fill="#f1f5f9" font-size="13">$312.45</text>
+  <text x="600" y="321" fill="#22c55e" font-size="13">+1.18%</text>
+  <text x="800" y="321" fill="#94a3b8" font-size="13">$98.4M</text>
+  <rect x="1090" y="304" width="70" height="24" rx="4" fill="#1d4ed8"/>
+  <text x="1125" y="320" fill="#fff" font-size="11" text-anchor="middle">Trade</text>
+
+  <rect x="40" y="337" width="1200" height="40" fill="#172033"/>
+  <text x="60" y="362" fill="#f1f5f9" font-size="13" font-weight="bold">XRP/USDT</text>
+  <text x="400" y="362" fill="#f1f5f9" font-size="13">$0.6124</text>
+  <text x="600" y="362" fill="#22c55e" font-size="13">+3.27%</text>
+  <text x="800" y="362" fill="#94a3b8" font-size="13">$214.9M</text>
+  <rect x="1090" y="345" width="70" height="24" rx="4" fill="#1d4ed8"/>
+  <text x="1125" y="361" fill="#fff" font-size="11" text-anchor="middle">Trade</text>
+
+  <!-- Selenium highlight overlay — the missing Favorites tab -->
+  <rect x="410" y="133" width="90" height="38" rx="4" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="455" y="157" fill="#ef4444" font-size="11" text-anchor="middle" opacity="0.7">expected</text>
+
+  <!-- Failure overlay banner -->
+  <rect x="0" y="690" width="1280" height="110" fill="#1a0a0a" opacity="0.97"/>
+  <rect x="0" y="690" width="4" height="110" fill="#ef4444"/>
+  <text x="24" y="716" fill="#ef4444" font-size="13" font-weight="bold">✘ ASSERTION FAILED — testCategoryTabsDisplayed</text>
+  <text x="24" y="738" fill="#f87171" font-size="12">SoftAssertionError: Tab 'Favorites' should be present.</text>
+  <text x="24" y="756" fill="#94a3b8" font-size="11">  Expected : tabs containing "Favorites"</text>
+  <text x="24" y="772" fill="#94a3b8" font-size="11">  Actual   : [All, BTC, ETH, USDT]   (4 tabs found, Favorites absent)</text>
+  <text x="24" y="792" fill="#6b7280" font-size="10">  at NavigationTest.testCategoryTabsDisplayed(TradingTest.java:57)  |  Chrome 121  |  2024-01-15 09:15:02</text>
+
+  <!-- Timestamp watermark -->
+  <text x="1260" y="795" fill="#374151" font-size="10" text-anchor="end">testCategoryTabsDisplayed_20240115_091502.png</text>
+</svg>

@@ -1,0 +1,25 @@
+# Maven
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test artifacts (generated — not committed)
+target/screenshots/
+target/extent-reports/
+target/allure-results/
+target/logs/
+
+# Keep sample report evidence
+!src/test/resources/reports/

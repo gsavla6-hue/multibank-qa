@@ -1,0 +1,13 @@
+{
+  "expectedSections": [
+    "Top Gainers",
+    "Trending Now",
+    "Top Losers"
+  ],
+  "minPairCount": 3,
+  "expectedColumns": [
+    "Pair",
+    "Price",
+    "Change"
+  ]
+}

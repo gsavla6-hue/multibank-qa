@@ -1,0 +1,70 @@
+<svg viewBox="0 0 1280 500" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', sans-serif">
+  <rect width="1280" height="500" fill="#0d1117"/>
+
+  <!-- Title -->
+  <text x="640" y="44" fill="#f1f5f9" font-size="20" font-weight="bold" text-anchor="middle">Cross-Browser Test Results — MultiBank QA Suite</text>
+  <text x="640" y="66" fill="#64748b" font-size="13" text-anchor="middle">2024-01-15  |  Smoke Suite  |  Parallel Execution  |  Headless Mode</text>
+
+  <!-- Chrome column -->
+  <rect x="40" y="90" width="360" height="360" rx="10" fill="#1e293b" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="40" y="90" width="360" height="48" rx="10" fill="#1d3a6b"/>
+  <rect x="40" y="118" width="360" height="20" fill="#1d3a6b"/>
+  <circle cx="72" cy="114" r="14" fill="#4285F4"/>
+  <text x="72" y="119" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">C</text>
+  <text x="200" y="119" fill="#93c5fd" font-size="13" font-weight="bold" text-anchor="middle">Chrome 121</text>
+  <text x="360" y="119" fill="#22c55e" font-size="12" font-weight="bold" text-anchor="end" dx="-14">5/5 PASS</text>
+
+  <text x="60" y="162" fill="#22c55e" font-size="12">✔</text><text x="78" y="162" fill="#cbd5e1" font-size="12">testPageLoads</text><text x="385" y="162" fill="#64748b" font-size="11" text-anchor="end">1.24s</text>
+  <text x="60" y="188" fill="#22c55e" font-size="12">✔</text><text x="78" y="188" fill="#cbd5e1" font-size="12">testNavBarPresent</text><text x="385" y="188" fill="#64748b" font-size="11" text-anchor="end">1.88s</text>
+  <text x="60" y="214" fill="#22c55e" font-size="12">✔</text><text x="78" y="214" fill="#cbd5e1" font-size="12">testNavItemsPresent</text><text x="385" y="214" fill="#64748b" font-size="11" text-anchor="end">4.61s</text>
+  <text x="60" y="240" fill="#22c55e" font-size="12">✔</text><text x="78" y="240" fill="#cbd5e1" font-size="12">testSpotSectionPresent</text><text x="385" y="240" fill="#64748b" font-size="11" text-anchor="end">3.14s</text>
+  <text x="60" y="266" fill="#22c55e" font-size="12">✔</text><text x="78" y="266" fill="#cbd5e1" font-size="12">testNavLinksHaveValidHref</text><text x="385" y="266" fill="#64748b" font-size="11" text-anchor="end">4.50s</text>
+
+  <rect x="56" y="390" width="310" height="6" rx="3" fill="#1e3a5f"/>
+  <rect x="56" y="390" width="310" height="6" rx="3" fill="#22c55e"/>
+  <text x="200" y="422" fill="#22c55e" font-size="22" font-weight="bold" text-anchor="middle">100%</text>
+  <text x="200" y="440" fill="#64748b" font-size="11" text-anchor="middle">Pass Rate  ·  15.4s total</text>
+
+  <!-- Firefox column -->
+  <rect x="460" y="90" width="360" height="360" rx="10" fill="#1e293b" stroke="#ff6611" stroke-width="1.5"/>
+  <rect x="460" y="90" width="360" height="48" rx="10" fill="#3d1f0d"/>
+  <rect x="460" y="118" width="360" height="20" fill="#3d1f0d"/>
+  <circle cx="492" cy="114" r="14" fill="#FF6611"/>
+  <text x="492" y="119" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">F</text>
+  <text x="620" y="119" fill="#fdba74" font-size="13" font-weight="bold" text-anchor="middle">Firefox 122</text>
+  <text x="805" y="119" fill="#22c55e" font-size="12" font-weight="bold" text-anchor="end" dx="-14">5/5 PASS</text>
+
+  <text x="480" y="162" fill="#22c55e" font-size="12">✔</text><text x="498" y="162" fill="#cbd5e1" font-size="12">testPageLoads</text><text x="805" y="162" fill="#64748b" font-size="11" text-anchor="end">1.61s</text>
+  <text x="480" y="188" fill="#22c55e" font-size="12">✔</text><text x="498" y="188" fill="#cbd5e1" font-size="12">testNavBarPresent</text><text x="805" y="188" fill="#64748b" font-size="11" text-anchor="end">2.33s</text>
+  <text x="480" y="214" fill="#22c55e" font-size="12">✔</text><text x="498" y="214" fill="#cbd5e1" font-size="12">testNavItemsPresent</text><text x="805" y="214" fill="#64748b" font-size="11" text-anchor="end">5.08s</text>
+  <text x="480" y="240" fill="#22c55e" font-size="12">✔</text><text x="498" y="240" fill="#cbd5e1" font-size="12">testSpotSectionPresent</text><text x="805" y="240" fill="#64748b" font-size="11" text-anchor="end">3.84s</text>
+  <text x="480" y="266" fill="#22c55e" font-size="12">✔</text><text x="498" y="266" fill="#cbd5e1" font-size="12">testNavLinksHaveValidHref</text><text x="805" y="266" fill="#64748b" font-size="11" text-anchor="end">5.21s</text>
+
+  <rect x="476" y="390" width="310" height="6" rx="3" fill="#3d2010"/>
+  <rect x="476" y="390" width="310" height="6" rx="3" fill="#22c55e"/>
+  <text x="620" y="422" fill="#22c55e" font-size="22" font-weight="bold" text-anchor="middle">100%</text>
+  <text x="620" y="440" fill="#64748b" font-size="11" text-anchor="middle">Pass Rate  ·  18.1s total</text>
+
+  <!-- Edge column -->
+  <rect x="880" y="90" width="360" height="360" rx="10" fill="#1e293b" stroke="#0078D7" stroke-width="1.5"/>
+  <rect x="880" y="90" width="360" height="48" rx="10" fill="#0a2a4a"/>
+  <rect x="880" y="118" width="360" height="20" fill="#0a2a4a"/>
+  <circle cx="912" cy="114" r="14" fill="#0078D7"/>
+  <text x="912" y="119" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">E</text>
+  <text x="1040" y="119" fill="#93c5fd" font-size="13" font-weight="bold" text-anchor="middle">Edge 121</text>
+  <text x="1225" y="119" fill="#22c55e" font-size="12" font-weight="bold" text-anchor="end" dx="-14">5/5 PASS</text>
+
+  <text x="900" y="162" fill="#22c55e" font-size="12">✔</text><text x="918" y="162" fill="#cbd5e1" font-size="12">testPageLoads</text><text x="1225" y="162" fill="#64748b" font-size="11" text-anchor="end">1.39s</text>
+  <text x="900" y="188" fill="#22c55e" font-size="12">✔</text><text x="918" y="188" fill="#cbd5e1" font-size="12">testNavBarPresent</text><text x="1225" y="188" fill="#64748b" font-size="11" text-anchor="end">2.01s</text>
+  <text x="900" y="214" fill="#22c55e" font-size="12">✔</text><text x="918" y="214" fill="#cbd5e1" font-size="12">testNavItemsPresent</text><text x="1225" y="214" fill="#64748b" font-size="11" text-anchor="end">4.77s</text>
+  <text x="900" y="240" fill="#22c55e" font-size="12">✔</text><text x="918" y="240" fill="#cbd5e1" font-size="12">testSpotSectionPresent</text><text x="1225" y="240" fill="#64748b" font-size="11" text-anchor="end">3.42s</text>
+  <text x="900" y="266" fill="#22c55e" font-size="12">✔</text><text x="918" y="266" fill="#cbd5e1" font-size="12">testNavLinksHaveValidHref</text><text x="1225" y="266" fill="#64748b" font-size="11" text-anchor="end">4.89s</text>
+
+  <rect x="896" y="390" width="310" height="6" rx="3" fill="#0a2a4a"/>
+  <rect x="896" y="390" width="310" height="6" rx="3" fill="#22c55e"/>
+  <text x="1040" y="422" fill="#22c55e" font-size="22" font-weight="bold" text-anchor="middle">100%</text>
+  <text x="1040" y="440" fill="#64748b" font-size="11" text-anchor="middle">Pass Rate  ·  16.5s total</text>
+
+  <!-- Footer summary -->
+  <text x="640" y="478" fill="#475569" font-size="11" text-anchor="middle">15 tests · 15 passed · 0 failed · All browsers consistent · Selenium Grid 4  |  Generated 2024-01-15 09:18:44</text>
+</svg>

@@ -1,0 +1,128 @@
+version: "3.8"
+
+# ─── Selenium Grid 4 + MultiBank QA Framework ────────────────────────────────
+#
+# Services:
+#   selenium-hub   – Grid hub (router + distributor + session map)
+#   chrome         – Chrome node  (scalable via --scale chrome=N)
+#   firefox        – Firefox node (scalable via --scale firefox=N)
+#   edge           – Edge node
+#   tests          – Test runner container (runs mvn on startup)
+#
+# Usage:
+#   docker-compose up --build                     # Run full regression
+#   docker-compose up --scale chrome=3            # 3 parallel Chrome nodes
+#   docker-compose run tests mvn test -Psmoke     # Smoke suite only
+#   docker-compose run tests mvn test -Dbrowser=firefox
+#
+# Grid UI: http://localhost:4444/ui
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Selenium Hub ─────────────────────────────────────────────────────────
+  selenium-hub:
+    image: selenium/hub:4.18.1
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+      - "4442:4442"
+      - "4443:4443"
+    environment:
+      - SE_NODE_MAX_SESSIONS=5
+      - SE_SESSION_REQUEST_TIMEOUT=300
+      - SE_SESSION_RETRY_INTERVAL=5
+    networks:
+      - selenium-grid
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # ── Chrome Node ───────────────────────────────────────────────────────────
+  chrome:
+    image: selenium/node-chrome:4.18.1
+    container_name: selenium-chrome
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=3
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - START_XVFB=false
+    shm_size: "2gb"
+    networks:
+      - selenium-grid
+    volumes:
+      - /dev/shm:/dev/shm
+
+  # ── Firefox Node ──────────────────────────────────────────────────────────
+  firefox:
+    image: selenium/node-firefox:4.18.1
+    container_name: selenium-firefox
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=2
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - START_XVFB=false
+    shm_size: "2gb"
+    networks:
+      - selenium-grid
+
+  # ── Edge Node ─────────────────────────────────────────────────────────────
+  edge:
+    image: selenium/node-edge:4.18.1
+    container_name: selenium-edge
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=2
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - START_XVFB=false
+    shm_size: "2gb"
+    networks:
+      - selenium-grid
+
+  # ── Test Runner ───────────────────────────────────────────────────────────
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: multibank-tests
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SELENIUM_REMOTE_URL=http://selenium-hub:4444/wd/hub
+      - BROWSER=${BROWSER:-chrome}
+      - HEADLESS=true
+      - BASE_URL=${BASE_URL:-https://trade.multibank.io}
+    volumes:
+      # Mount target/ so reports are accessible on the host
+      - ./target:/app/target
+    networks:
+      - selenium-grid
+    command: >
+      mvn test
+        -P${SUITE:-regression}
+        -Dbrowser=${BROWSER:-chrome}
+        -Dheadless=true
+        -Dselenium.remote.url=http://selenium-hub:4444/wd/hub
+        --no-transfer-progress
+
+networks:
+  selenium-grid:
+    driver: bridge

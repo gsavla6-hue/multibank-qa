@@ -2,7 +2,7 @@
 
 > Production-grade Selenium + TestNG automation suite for [mb.io](https://mb.io/en)
 
-[![CI Pipeline](https://github.com/YOUR_USERNAME/multibank-qa/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/multibank-qa/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/gsavla6-hue/multibank-qa/actions/workflows/ci.yml/badge.svg)](https://github.com/gsavla6-hue/multibank-qa/actions/workflows/ci.yml)
 
 ---
 
@@ -151,7 +151,7 @@ multibank-qa/
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/multibank-qa.git
+git clone https://github.com/gsavla6-hue/multibank-qa.git
 cd multibank-qa
 
 # 2. Run the full regression suite (Chrome, headed)
@@ -307,7 +307,7 @@ The GitHub Actions pipeline (`.github/workflows/ci.yml`) runs on:
 - Framework logs (7-day retention)
 
 **Allure reports** are deployed to GitHub Pages at:
-`https://YOUR_USERNAME.github.io/multibank-qa/allure-report/<run-number>/`
+`https://gsavla6-hue.github.io/multibank-qa/allure-report/<run-number>/`
 
 ---
 
